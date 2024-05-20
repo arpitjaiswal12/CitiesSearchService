@@ -26,31 +26,30 @@ const destroy = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, city, "city deleted successfully !"));
+    .json(new ApiResponse(200, response, "city deleted successfully !"));
 });
 
 const get = asyncHandler(async (req, res) => {
   const response = await cityService.getCity(req.params.id);
 
   if (!response) {
-    throw new ApiError(500, "Not able to get city");
+    throw new ApiError(500, response, "Not able to get city");
   }
 
   return res
     .status(200)
-    .json(new ApiResponse(200, city, "city fetched successfully !"));
+    .json(new ApiResponse(200, response, "city fetched successfully !"));
 });
 
 const update = asyncHandler(async (req, res) => {
   const response = await cityService.updateCity(req.params.id, req.body);
-
   if (!response) {
     throw new ApiError(500, "Not able to update city");
   }
 
   return res
     .status(200)
-    .json(new ApiResponse(200, city, "city updated successfully !"));
+    .json(new ApiResponse(200, response, "city updated successfully !"));
 });
 
 module.exports = {
