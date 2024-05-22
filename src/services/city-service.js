@@ -1,4 +1,5 @@
 const { CityRepository } = require("../repository/index.js");
+const { ApiError } = require("../utils/ApiError.js");
 
 class CityService {
   constructor() {
@@ -42,6 +43,19 @@ class CityService {
     } catch (error) {
       console.log("Something went wrong at service layer");
       throw { error };
+    }
+  }
+
+  async getAllCities() {
+    try {
+      const cities = await this.cityRepository.getCities();
+      return cities;
+    } catch (error) {
+      console.log("Something went wrong at service layer");
+      throw new ApiError(
+        404,
+        "Error at city-service layer while fetching cities !"
+      );
     }
   }
 }

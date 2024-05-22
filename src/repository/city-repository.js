@@ -1,5 +1,6 @@
 const { where } = require("sequelize");
 const { City } = require("../models/index.js");
+const { ApiError } = require("../utils/ApiError.js");
 
 class CityRepository {
   async createCity({ name }) {
@@ -39,6 +40,19 @@ class CityRepository {
     }
   }
 
+  async getCities() {
+    try {
+      const cities = await City.findAll();
+      return cities;
+    } catch (error) {
+      console.log("Something went wrong in the repository layer");
+      throw new ApiError(
+        404,
+        "Error while fetching cities in repository layer!"
+      );
+    }
+  }
+
   async updateCity(cityId, data) {
     try {
       // The below approach also works but will not return updated object
@@ -52,7 +66,7 @@ class CityRepository {
 
       // for getting updated data in mysql we use the below approach
       const city = await City.findByPk(cityId);
-      city.name = data.name;  // values are case sensitive check proper req.body parameter while passing 
+      city.name = data.name; // values are case sensitive check proper req.body parameter while passing
       await city.save();
       return city;
     } catch (error) {

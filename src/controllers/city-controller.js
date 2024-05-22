@@ -41,6 +41,17 @@ const get = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, response, "city fetched successfully !"));
 });
 
+const getAll = asyncHandler(async (req, res) => {
+  const cities = await cityService.getAllCities();
+  if (!cities) {
+    throw new ApiError(404, "Cities not found!");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, cities, "All cities are fetched successfully!"));
+});
+
 const update = asyncHandler(async (req, res) => {
   const response = await cityService.updateCity(req.params.id, req.body);
   if (!response) {
@@ -57,4 +68,5 @@ module.exports = {
   destroy,
   get,
   update,
+  getAll,
 };
