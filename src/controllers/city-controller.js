@@ -42,7 +42,7 @@ const get = asyncHandler(async (req, res) => {
 });
 
 const getAll = asyncHandler(async (req, res) => {
-  const cities = await cityService.getAllCities();
+  const cities = await cityService.getAllCities(req.query); // beacuse request is comming from query params
   if (!cities) {
     throw new ApiError(404, "Cities not found!");
   }

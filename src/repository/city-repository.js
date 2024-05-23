@@ -1,4 +1,4 @@
-const { where } = require("sequelize");
+const { where, Op } = require("sequelize");
 const { City } = require("../models/index.js");
 const { ApiError } = require("../utils/ApiError.js");
 
@@ -40,8 +40,18 @@ class CityRepository {
     }
   }
 
-  async getCities() {
+  async getCities(filter) {
     try {
+      if (filter.name) {
+        const cities = await City.findAll({
+          where: {
+            name: {
+              [Op.startsWith]: filter.name,
+            },
+          },
+        });
+        return cities;
+      }
       const cities = await City.findAll();
       return cities;
     } catch (error) {
@@ -52,7 +62,24 @@ class CityRepository {
       );
     }
   }
-
+  /*
+  async getAllCitiesFromFilter(prefix_char) {
+    try {
+      const cities = await City.find({
+        where: {
+          name: { [Op.startsWith]: `%${prefix_char}%` },
+        },
+      });
+      return cities;
+    } catch (error) {
+      console.log("Something went wrong in the repository layer");
+      throw new ApiError(
+        404,
+        "Error while fetching prefx cities in repository layer!"
+      );
+    }
+  }
+*/
   async updateCity(cityId, data) {
     try {
       // The below approach also works but will not return updated object
