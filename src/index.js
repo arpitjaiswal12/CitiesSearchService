@@ -9,7 +9,7 @@ const setupAndStartServer = async () => {
   // create express object
   const app = express();
 
-  app.use(bodyParser.json());
+  app.use(bodyParser.json());  // app.use() is applied to all incoming request 
   app.use(bodyParser.urlencoded({ extended: true }));
   
   app.use("/api", ApiRoutes);
